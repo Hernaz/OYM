@@ -1,0 +1,22 @@
+name: Update From Discord
+on:
+  repository_dispatch:
+    types: [update_site]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Change Status
+        run: |
+          # Change la couleur (CSS class)
+          sed -i "s/id=\"line-${{ github.event.client_payload.line }}\" class=\"line-card [^\"]*\"/id=\"line-${{ github.event.client_payload.line }}\" class=\"line-card ${{ github.event.client_payload.color }}\"/g" index.html
+          # Change le texte
+          sed -i "s/id=\"label-${{ github.event.client_payload.line }}\" class=\"status-label\">[^<]*/id=\"label-${{ github.event.client_payload.line }}\" class=\"status-label\">${{ github.event.client_payload.status }}/g" index.html
+      - name: Save on GitHub
+        run: |
+          git config user.name "Bot Regulateur"
+          git config user.email "bot@oym.fr"
+          git add .
+          git commit -m "MAJ via Discord"
+          git push
