@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OYM - Plateforme Officielle</title>
+    
+    <link rel="icon" type="image/png" href="https://image.noelshack.com/fichiers/2026/10/3/1772659162-sans-titre-384-20260304220911.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --oym-green: #87a37a; 
+            --bg: #f4f6f3;
+            --nav-bg: #ffffff;
+            --card-bg: #ffffff;
+            --text: #1a1a1a;
+            --text-sub: #555;
+            --border: #d1d5db;
+            --success: #27ae60;
+            --disabled: #95a5a6;
+        }
+
+        [data-theme="dark"] {
+            --bg: #121412;
+            --nav-bg: #1e201e;
+            --card-bg: #252825;
+            --text: #f0f2f0;
+            --text-sub: #a0a5a0;
+            --border: #333;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Cabin', 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            background: var(--nav-bg);
+            border-bottom: 3px solid var(--oym-green);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 70px;
+        }
+
+        .logo-nav { height: 55px; width: auto; display: block; }
+        .nav-links { display: flex; gap: 12px; align-items: center; }
+
+        .btn-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-nav svg { width: 20px; height: 20px; fill: currentColor; }
+        .btn-nav:hover { background: var(--oym-green); color: white; border-color: var(--oym-green); transform: translateY(-2px); }
+
+        /* --- SECTIONS --- */
+        section {
+            display: none;
+            min-height: calc(100vh - 160px);
+            padding: 40px 10%;
+            animation: slideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        section:target { display: block; }
+        #home { display: block; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* --- DASHBOARD --- */
+        .grid-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .line-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            border: 3px solid var(--success);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: 0.4s;
+        }
+
+        .line-card.offline {
+            border-color: var(--disabled);
+            filter: grayscale(1);
+            opacity: 0.7;
+        }
+
+        .line-card:hover { transform: scale(1.02); }
+
+        .status-badge {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px; height: 50px; border-radius: 50%;
+            background: var(--success);
+            border: 5px solid var(--bg);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .line-card.offline .status-badge { background: var(--disabled); }
+        .status-badge svg { width: 24px; height: 24px; fill: white; }
+
+        .line-img { width: 130px; height: 130px; object-fit: contain; margin-bottom: 15px; }
+
+        .terminus {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .arrow { color: var(--oym-green); }
+
+        /* --- FAQ --- */
+        .faq-box { max-width: 700px; margin: 0 auto; }
+        details { background: var(--card-bg); margin-bottom: 15px; border-radius: 15px; overflow: hidden; border: 1px solid var(--border); transition: 0.3s; }
+        details[open] { border-color: var(--oym-green); }
+        summary { padding: 20px; font-weight: 700; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        summary::after { content: '+'; font-size: 1.5rem; color: var(--oym-green); transition: 0.3s; }
+        details[open] summary::after { transform: rotate(45deg); }
+        .faq-content { padding: 0 20px 20px 20px; line-height: 1.6; color: var(--text-sub); animation: fadeInFaq 0.4s ease; }
+        @keyframes fadeInFaq { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- CONTACT --- */
+        .form-box { max-width: 500px; margin: 0 auto; background: var(--card-bg); padding: 35px; border-radius: 25px; border: 1px solid var(--border); }
+        input, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); color: var(--text); font-family: inherit; box-sizing: border-box; }
+        .btn-send { background: var(--oym-green); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; }
+        .btn-send:hover { opacity: 0.9; letter-spacing: 1px; }
+
+        footer { padding: 30px; text-align: center; font-size: 0.8rem; border-top: 1px solid var(--border); opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#home">
+            <img src="https://image.noelshack.com/fichiers/2026/10/3/1772659162-sans-titre-384-20260304220911.png" class="logo-nav" alt="OYM Logo">
+        </a>
+        <div class="nav-links">
+            <a href="#faq" class="btn-nav">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                <span>FAQ</span>
+            </a>
+            <a href="#contact" class="btn-nav">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <span>Contact</span>
+            </a>
+            <button class="btn-nav" onclick="toggleTheme()" title="Changer de mode">
+                <svg viewBox="0 0 24 24"><path d="M12 3V4M12 20V21M4 12H3M21 12H20M18.36 5.64L19.07 4.93M4.93 19.07L5.64 18.36M4.93 4.93L5.64 5.64M18.36 18.36L19.07 19.07M12 8C9.79 8 8 9.79 8 12C8 14.21 9.79 16 12 16C14.21 16 16 14.21 16 12C16 9.79 14.21 8 12 8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <section id="home">
+        <div class="grid-dashboard">
+            <div class="line-card">
+                <div class="status-badge">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <img src="https://image.noelshack.com/fichiers/2026/10/3/1772659504-sans-titre-383-20260304222208.png" class="line-img" alt="T3">
+                <div class="terminus">Porte du Gouesnou <span class="arrow">↔</span> Gascogne Centre</div>
+            </div>
+
+            <div class="line-card offline">
+                <div class="status-badge">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </div>
+                <img src="https://image.noelshack.com/fichiers/2026/10/3/1772659497-sans-titre-383-20260304222305.png" class="line-img" alt="T4">
+                <div class="terminus">Ligne non définie <span class="arrow">↔</span> Indisponible</div>
+            </div>
+
+            <div class="line-card">
+                <div class="status-badge">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <img src="https://image.noelshack.com/fichiers/2026/10/3/1772659493-sans-titre-383-20260304222402.png" class="line-img" alt="T12">
+                <div class="terminus">Robespierre <span class="arrow">↔</span> Place des Jardins</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq">
+        <div class="faq-box">
+            <h1 style="color: var(--oym-green); text-align: center;">Centre d'aide</h1>
+            <details>
+                <summary>Comment conduire sur le réseau OYM?</summary>
+                <div class="faq-content">Il est nécessaire de postuler via un formulaire sur le serveur Discord d'Oise Yvelines Mobilités.</div>
+            </details>
+            <details>
+                <summary>Pourquoi les jeux n'ouvrent pas en permanence ?</summary>
+                <div class="faq-content">Pour protéger nos modèles des leaks éventuels. OYM propose aussi des lignes en libre accès comme le T12.</div>
+            </details>
+            <details>
+                <summary>Comment faire partie des équipes OYM?</summary>
+                <div class="faq-content">Présentez-vous auprès d'OmitDev et prouvez votre fiabilité pour maintenir le réseau.</div>
+            </details>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="form-box">
+            <h2 style="color: var(--oym-green); margin-top:0">Nous écrire</h2>
+            <input type="text" placeholder="Pseudo Discord">
+            <textarea placeholder="Votre message..." rows="5"></textarea>
+            <button class="btn-send" onclick="alert('Message envoyé !')">Envoyer</button>
+        </div>
+    </section>
+
+    <footer>
+        Par Zeno et Milandris pour OYM mobilités. Tous droits réservés - 2026
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const b = document.body;
+            const current = b.getAttribute('data-theme');
+            b.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        }
+
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash || '#home';
+            document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+            const target = document.querySelector(hash);
+            if(target) target.style.display = 'block';
+        });
+    </script>
+</body>
+  </html>
+
