@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OYM - Plateforme Officielle</title>
+    <title>OYM - Oise Yvelines Mobilités</title>
     
     <link rel="icon" type="image/png" href="https://image.noelshack.com/fichiers/2026/10/3/1772659162-sans-titre-384-20260304220911.png">
     <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -40,7 +40,6 @@
             overflow-x: hidden;
         }
 
-        /* --- LOADER --- */
         #loader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -57,7 +56,6 @@
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes loading { to { width: 100%; } }
 
-        /* --- NAV --- */
         nav {
             display: flex;
             justify-content: space-between;
@@ -71,20 +69,25 @@
         }
         @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
 
-        .nav-links { display: flex; gap: 15px; }
+        .nav-links { display: flex; gap: 15px; align-items: center; }
         .btn-nav {
-            padding: 10px 20px;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 12px;
             border: 1px solid var(--border);
             background: var(--card-bg);
             color: var(--text);
             text-decoration: none;
-            font-weight: bold;
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            padding: 0;
         }
+        .btn-nav svg { width: 20px; height: 20px; fill: currentColor; }
         .btn-nav:hover { background: var(--oym-green); color: white; transform: scale(1.1); box-shadow: 0 0 15px var(--oym-green); }
 
-        /* --- GRID --- */
         .grid-dashboard {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -148,9 +151,8 @@
             color: var(--text-sub);
         }
 
-        /* --- FAQ --- */
-        .faq-box { max-width: 800px; margin: 40px auto; }
-        details { 
+        .faq-box, .contact-box { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        details, .form-container { 
             background: var(--card-bg); 
             border-radius: 18px; 
             margin-bottom: 15px; 
@@ -162,10 +164,23 @@
         summary { padding: 20px; font-weight: bold; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
         summary::after { content: '▲'; font-size: 10px; transition: 0.4s; color: var(--oym-green); }
         details[open] summary::after { transform: rotate(180deg); }
-        .faq-content { padding: 0 20px 20px; color: var(--text-sub); line-height: 1.6; animation: fadeIn 0.5s ease; }
+        .faq-content, .form-content { padding: 0 20px 20px; color: var(--text-sub); line-height: 1.6; animation: fadeIn 0.5s ease; }
+        
+        .form-content { padding: 30px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--text); }
+        .input-group input, .input-group textarea {
+            width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border);
+            background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; box-sizing: border-box; outline: none;
+        }
+        .warning-msg {
+            background: rgba(243, 156, 18, 0.1); border: 1px solid var(--warning);
+            color: var(--warning); padding: 15px; border-radius: 12px; margin-bottom: 20px;
+            font-size: 0.9rem; display: flex; align-items: center; gap: 10px;
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- SECTIONS --- */
         section { display: none; min-height: 80vh; }
         #home { display: block; }
         section:target { display: block; }
@@ -176,16 +191,22 @@
 <body data-theme="dark">
 
     <div id="loader">
-        <img src="https://image.noelshack.com/fichiers/2026/10/3/1772659162-sans-titre-384-20260304220911.png" class="loader-logo">
+        <img src="https://image.noelshack.com/fichiers/2026/10/3/1772659162-sans-titre-384-20260304220911.png" class="loader-logo" id="load-img">
         <div class="loader-bar"><div class="loader-progress"></div></div>
     </div>
 
     <nav>
-        <a href="#home"><img src="https://image.noelshack.com/fichiers/2026/10/3/1772659162-sans-titre-384-20260304220911.png" style="height:55px;"></a>
+        <a href="#home"><img src="https://image.noelshack.com/fichiers/2026/10/3/1772659162-sans-titre-384-20260304220911.png" id="nav-logo" style="height:55px;"></a>
         <div class="nav-links">
-            <a href="#faq" class="btn-nav">FAQ</a>
-            <a href="#contact" class="btn-nav">Contact</a>
-            <button class="btn-nav" onclick="toggleTheme()">🌓</button>
+            <a href="#faq" class="btn-nav" title="FAQ">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+            </a>
+            <a href="#contact" class="btn-nav" title="Contact">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </a>
+            <button class="btn-nav" onclick="toggleTheme()" id="theme-btn" title="Thème">
+                <svg id="theme-icon" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C7.99 5.08 10 8.3 10 12s-2.01 6.92-5 8.65C6.47 21.5 8.18 22 10 22c5.52 0 10-4.48 10-10S15.52 2 10 2z"/></svg>
+            </button>
         </div>
     </nav>
 
@@ -219,7 +240,7 @@
 
     <section id="faq">
         <div class="faq-box">
-            <h1 style="text-align: center; color: var(--oym-green); margin-bottom: 30px;">FAQ Complète</h1>
+            <h1 style="text-align: center; color: var(--oym-green); margin-bottom: 30px;">FAQ</h1>
             <details>
                 <summary>Comment conduire sur le réseau OYM ?</summary>
                 <div class="faq-content">Il est nécessaire de postuler via un formulaire sur le serveur Discord d'Oise Yvelines Mobilités.</div>
@@ -235,7 +256,34 @@
         </div>
     </section>
 
-    <footer>Par Zeno et Milandris pour OYM mobilités. Tous droits réservés - 2026</footer>
+    <section id="contact">
+        <div class="contact-box">
+            <h1 style="text-align: center; color: var(--oym-green); margin-bottom: 30px;">Contact</h1>
+            <div class="warning-msg">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 14h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>
+                <span>Attention : Discord est requis pour obtenir une réponse de l'équipe.</span>
+            </div>
+            <div class="form-container">
+                <div class="form-content">
+                    <div class="input-group">
+                        <label>Pseudo Discord</label>
+                        <input type="text" id="username" placeholder="Pseudo#0000">
+                    </div>
+                    <div class="input-group">
+                        <label>Sujet</label>
+                        <input type="text" id="subject" placeholder="Sujet de votre demande">
+                    </div>
+                    <div class="input-group">
+                        <label>Message</label>
+                        <textarea id="message" rows="5" placeholder="Détails..."></textarea>
+                    </div>
+                    <button class="btn-nav" style="width: 100%; height: 50px; font-weight: bold;" onclick="sendToDiscord()">Envoyer</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>Par Zeno et Malandris pour OYM mobilités. Tous droits réservés - 2026</footer>
 
     <script>
         window.addEventListener('load', () => {
@@ -248,7 +296,25 @@
 
         function toggleTheme() {
             const b = document.body;
-            b.setAttribute('data-theme', b.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+            const logo = document.getElementById('nav-logo');
+            const loadLogo = document.getElementById('load-img');
+            const themeIcon = document.getElementById('theme-icon');
+            const isDark = b.getAttribute('data-theme') === 'dark';
+            
+            const darkLogo = "https://image.noelshack.com/fichiers/2026/10/3/1772659162-sans-titre-384-20260304220911.png";
+            const lightLogo = "https://image.noelshack.com/fichiers/2026/10/5/1772782497-sans-titre-384-20260306083408.png";
+
+            if(isDark) {
+                b.setAttribute('data-theme', 'light');
+                logo.src = lightLogo;
+                loadLogo.src = lightLogo;
+                themeIcon.innerHTML = '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.37c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>';
+            } else {
+                b.setAttribute('data-theme', 'dark');
+                logo.src = darkLogo;
+                loadLogo.src = darkLogo;
+                themeIcon.innerHTML = '<path d="M10 2c-1.82 0-3.53.5-5 1.35C7.99 5.08 10 8.3 10 12s-2.01 6.92-5 8.65C6.47 21.5 8.18 22 10 22c5.52 0 10-4.48 10-10S15.52 2 10 2z"/>';
+            }
         }
 
         const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtPqn1UIVIV0ngcTZ50Fr4g1Zs-aUe4GJ9lt4zFtIsnodStOIDp6OWkbc61Q3lHLM1mmnXVUAyDQwU/pub?output=csv";
@@ -258,7 +324,6 @@
                 const r = await fetch(csvUrl + '&t=' + Date.now());
                 const d = await r.text();
                 const row = d.trim().split('\n').pop().split(',');
-
                 apply('t3', row[1]);
                 apply('t4', row[2]);
                 apply('t12', row[3]);
@@ -272,13 +337,11 @@
             const badge = document.getElementById('badge-'+id);
             const icon = document.getElementById('icon-'+id);
             const val = status.trim();
-
             const i = {
                 ok: '<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>',
                 warn: '<path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>',
                 err: '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>'
             };
-
             if(val.includes("Normal")) { 
                 badge.style.background = "var(--success)"; card.style.borderColor = "var(--success)"; icon.innerHTML = i.ok;
             } else if(val.includes("Perturbé")) { 
@@ -288,13 +351,41 @@
             }
         }
 
+        async function sendToDiscord() {
+            const webhook = "https://discord.com/api/webhooks/1479379094234992750/sfNssFzVspJ_iXnFvIo1xXOMAO_QPoF0S3rfg9K9aZdBtwduSc3wrrZIBln-eshdja48";
+            const user = document.getElementById('username').value;
+            const subj = document.getElementById('subject').value;
+            const msg = document.getElementById('message').value;
+            if(!user || !subj || !msg) return alert("Veuillez remplir tous les champs.");
+            const params = {
+                embeds: [{
+                    title: "Nouveau Contact Site Web",
+                    color: 8889210,
+                    fields: [
+                        { name: "Pseudo Discord", value: user, inline: true },
+                        { name: "Sujet", value: subj, inline: true },
+                        { name: "Message", value: msg }
+                    ],
+                    timestamp: new Date()
+                }]
+            };
+            try {
+                await fetch(webhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(params) });
+                alert("Message envoyé !");
+                document.getElementById('username').value = "";
+                document.getElementById('subject').value = "";
+                document.getElementById('message').value = "";
+            } catch(e) { alert("Erreur d'envoi."); }
+        }
+
         update();
         setInterval(update, 30000);
 
         window.addEventListener('hashchange', () => {
             const h = window.location.hash || '#home';
             document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-            document.querySelector(h).style.display = 'block';
+            const target = document.querySelector(h);
+            if(target) target.style.display = 'block';
         });
     </script>
 </body>
