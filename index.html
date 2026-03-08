@@ -3,108 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oise Yvelines Mobilités</title>
+    <title>OYM - Maintenance</title>
     
     <link rel="icon" type="image/png" href="https://image.noelshack.com/fichiers/2026/10/3/1772659162-sans-titre-384-20260304220911.png">
-    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    
+
     <style>
-        :root {
-            --oym-green: #87a37a; 
-            --bg: #121412;
-            --nav-bg: #1e201e;
-            --card-bg: #252825;
-            --text: #f0f2f0;
-            --text-sub: #a0a5a0;
-            --border: #333;
-            --success: #27ae60;
-            --warning: #f39c12;
-            --danger: #e74c3c;
+        /* --- POLICE PARISINE --- */
+        @font-face {
+            font-family: 'Parisine';
+            src: url('Parisine-Regular.otf') format('opentype');
+            font-weight: normal;
+        }
+        @font-face {
+            font-family: 'Parisine';
+            src: url('Parisine-Bold.otf') format('opentype');
+            font-weight: bold;
         }
 
-        [data-theme="light"] {
-            --bg: #f4f6f3;
-            --nav-bg: #ffffff;
-            --card-bg: #ffffff;
-            --text: #1a1a1a;
-            --text-sub: #555;
-            --border: #d1d5db;
+        :root {
+            --oym-green: #87a37a; 
+            --bg: #0f110f;
+            --card-bg: #1a1c1a;
+            --text: #f0f2f0;
+            --text-sub: #888;
+            --danger: #e74c3c;
         }
 
         body {
             margin: 0;
-            font-family: 'Cabin', sans-serif;
+            padding: 0;
+            font-family: 'Parisine', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            transition: background 0.5s ease;
-            overflow-x: hidden;
-        }
-
-        #loader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg);
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .loader-logo { width: 110px; animation: float 2s infinite ease-in-out; }
-        .loader-bar { width: 200px; height: 3px; background: #333; margin-top: 25px; border-radius: 5px; overflow: hidden; }
-        .loader-progress { width: 0%; height: 100%; background: var(--oym-green); animation: loading 1.5s forwards; }
-        
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        @keyframes loading { to { width: 100%; } }
-
-        nav {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 5%;
-            background: var(--nav-bg);
-            border-bottom: 3px solid var(--oym-green);
-            height: 75px;
-            position: sticky; top: 0; z-index: 1000;
-            animation: slideDown 0.8s ease;
-        }
-        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
-
-        .nav-links { display: flex; gap: 15px; align-items: center; }
-        .btn-nav {
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: var(--card-bg);
-            color: var(--text);
-            text-decoration: none;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            padding: 0;
-        }
-        .btn-nav svg { width: 20px; height: 20px; fill: currentColor; }
-        .btn-nav:hover { background: var(--oym-green); color: white; transform: scale(1.1); box-shadow: 0 0 15px var(--oym-green); }
-
-        .grid-dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 35px;
-            max-width: 1300px;
-            margin: 50px auto;
-            padding: 20px;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        .line-card {
-            background: var(--card-bg);
-            border-radius: 28px;
-            padding: 50px 25px;
+        /* --- CONTENEUR PRINCIPAL --- */
+        .maintenance-card {
             text-align: center;
+            background: var(--card-bg);
+            padding: 50px 40px;
+            border-radius: 30px;
+            border: 1px solid #333;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            max-width: 450px;
+            width: 90%;
             position: relative;
-            border: 2px solid var(--border);
-            transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            animation: fadeInScale 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Animation d'entrée */
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* --- LOGO AVEC PULSATION --- */
+        .logo-wrap {
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-main {
+            height: 100px;
+            width: auto;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* --- TEXTES --- */
+        h1 {
+            font-size: 2rem;
+            margin: 10px 0;
+            color: var(--text);
+            font-weight: bold;
+        }
+
+        .status-label {
+            display: inline-block;
+            color: var(--danger);
+            background: rgba(231, 76, 60, 0.1);
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        p {
+            color: var(--text-sub);
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-size: 1.05rem;
+        }
+
+        /* --- BARRE DE PROGRESSION DECORATIVE --- */
+        .loader-bar {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .loader-progress {
+            width: 40%;
+            height: 100%;
+            background: var(--oym-green);
+            border-radius: 10px;
+            animation: slideLoader 2s infinite linear;
+        }
+
+        @keyframes slideLoader {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(300%); }
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.75rem;
+            color: #555;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="maintenance-card">
+        <div class="logo-wrap">
+            <img src="https://image.noelshack.com/fichiers/2026/10/3/1772659162-sans-titre-384-20260304220911.png" class="logo-main" alt="OYM">
+        </div>
+
+        <div class="status-label">ACCÈS RESTREINT</div>
+
+        <h1>Plateforme Fermée</h1>
+        
+        <p>
+            Le site <strong>Oise Yvelines Mobilités</strong> est actuellement en maintenance ou fermé au public.<br><br>
+            Nos équipes préparent de nouveaux contenus. Merci de votre patience.
+        </p>
+
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+
+        <footer>
+            OYM — OISE YVELINES MOBILITÉS 2026
+        </footer>
+    </div>
+
+</body>
+</html>
             animation: cardIn 0.8s ease-out backwards;
             perspective: 1000px;
         }
